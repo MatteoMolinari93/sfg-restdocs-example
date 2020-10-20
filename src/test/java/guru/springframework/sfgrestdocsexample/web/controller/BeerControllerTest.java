@@ -2,10 +2,15 @@ package guru.springframework.sfgrestdocsexample.web.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -20,6 +25,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,11 +58,23 @@ class BeerControllerTest {
         		.param("iscold", "yes")
         		.accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("v1/beer", pathParameters(
+                .andDo(document("v1/beer", 
+                		pathParameters(
                 			parameterWithName("beerId").description("UUID of desired beer to get.")
                 			),
                 		requestParameters(
                 				parameterWithName("iscold").description("Is Beer cold query param.")
+                		),
+                		responseFields(
+                				fieldWithPath("id").description("Id of beer"),
+                				fieldWithPath("version"),
+                				fieldWithPath("createdDate"),
+                				fieldWithPath("lastModifiedDate"),
+                				fieldWithPath("beerName"),
+                				fieldWithPath("beerStyle"),
+                				fieldWithPath("upc"),
+                				fieldWithPath("price"),
+                				fieldWithPath("quantityOnHand")
                 				)
                 		));
     }
