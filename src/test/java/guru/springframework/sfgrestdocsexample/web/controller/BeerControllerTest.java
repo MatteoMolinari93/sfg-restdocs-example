@@ -28,7 +28,6 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
 import org.springframework.restdocs.payload.FieldDescriptor;
-import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.StringUtils;
 
@@ -40,7 +39,7 @@ import guru.springframework.sfgrestdocsexample.web.model.BeerDto;
 import guru.springframework.sfgrestdocsexample.web.model.BeerStyleEnum;
 
 @ExtendWith(RestDocumentationExtension.class)
-@AutoConfigureRestDocs
+@AutoConfigureRestDocs(uriScheme = "https", uriHost = "dev.springframework.guru", uriPort = 80)
 @WebMvcTest(BeerController.class)
 @ComponentScan(basePackages = "guru.springframework.sfgrestdocsexample.web.mappers")
 class BeerControllerTest {
