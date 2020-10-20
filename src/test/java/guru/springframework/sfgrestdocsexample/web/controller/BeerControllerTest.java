@@ -48,10 +48,17 @@ class BeerControllerTest {
     void getBeerById() throws Exception {
         given(beerRepository.findById(any())).willReturn(Optional.of(Beer.builder().build()));
 
-        mockMvc.perform(get("/api/v1/beer/{beerId}", UUID.randomUUID().toString()).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andDo(document("v1/beer", pathParameters(
+        mockMvc.perform(get("/api/v1/beer/{beerId}", UUID.randomUUID().toString())
+        		.param("iscold", "yes")
+        		.accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("v1/beer", pathParameters(
                 			parameterWithName("beerId").description("UUID of desired beer to get.")
-                		)));
+                			),
+                		requestParameters(
+                				parameterWithName("iscold").description("Is Beer cold query param.")
+                				)
+                		));
     }
 
     @Test
